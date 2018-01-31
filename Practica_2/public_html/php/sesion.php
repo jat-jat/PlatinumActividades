@@ -25,7 +25,13 @@
                 lanzar_error("Debes llenar primero todos los campos");
             }
         break;
-        case "logout":            
+        case "logout":  
+            if (ini_get("session.use_cookies")) {
+		$params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+            }
+            // destruimos la SESSION.
+            session_destroy();
         break;
         case "comprobar":
             //Si el usuario inició sesión se devuelve un 1, en caso contrario, 0.
