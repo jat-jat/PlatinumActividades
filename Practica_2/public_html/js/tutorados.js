@@ -11,17 +11,12 @@ $(document).ready(function() {
         },
         type: "POST",
         datatype: "text",
-        async:true,
+      
         success: function(resultado) {
-            if(resultado==0)
+            if(resultado==0){
            window.location.replace("index.html");
-        },
-        error: function(XHR, textStatus) {
-           alert("incorrecto prro: "+XHR.responseText);
-        }
-    });
-
-         $.ajax({
+       }else{
+            $.ajax({
         url: "php/tutorados.php",
         data:{
             fn:"ver",
@@ -40,5 +35,17 @@ $(document).ready(function() {
         error: function(XHR, textStatus) {
            alert("incorrecto: "+XHR.responseText);
         }
+    }); 
+       }
+        },
+        error: function(XHR, textStatus) {
+           alert("incorrecto prro: "+XHR.responseText);
+        }
     });
+
+       
+    }
+    
+    function Matricula(Matricula){
+       sessionStorage.setItem("MatriculaAlumno", Matricula);
     }
