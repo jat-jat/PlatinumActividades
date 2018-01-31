@@ -13,7 +13,7 @@
                 if ($consulta->execute()){
                     $res = $consulta->get_result();
                     $info = $res->fetch_assoc();
-                    if ($info['id']){                       
+                    if ($info['id']){                      
                         $_SESSION[ID_USUARIO] = $info['id'];
                     } else {                    
                         lanzar_error("Los datos ingresados son invalidos");
