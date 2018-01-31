@@ -11,18 +11,38 @@
         <script src="js/detalles_clase.js"></script>
     </head>
     <body>
-        <div><p class="bg-primary" align="center" id="titulo">Detalles de la clase: </p></div>
+        <div><p class="bg-primary" align="center">Detalles de la clase: <b id="nb_clase"></b></p></div>
         Actividades:
-        <ul>
-            <li>Coffee</li>
-            <li>Tea
-                <ul>
-                    <li>Black tea</li>
-                    <li>Green tea</li>
+        <ul id="lista_actividades">
+            <li>Corte 1:
+                <ul id="c1">
                 </ul>
             </li>
-            <li>Milk</li>
+            <li>Corte 2:
+                <ul id="c2">
+                </ul>
+            </li>
+            <li>Corte 3:
+                <ul id="c3">
+                </ul>
+            </li>
         </ul>
         <br>
+        
+        <table id="tabla_miembros" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Matrícula</th>
+                    <th>Apellidos</th>
+                    <th>Nombre(s)</th>
+                    <th>Corte 1</th>
+                    <th>Corte 2</th>
+                    <th>Corte 3</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </body>
 </html>

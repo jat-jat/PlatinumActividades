@@ -1,8 +1,8 @@
 $(document).ready(function() {
     $.post( "php/clases.php", {fn : "docentes_ver"}, null, "json")
         .done(function(res) {
-            var fila = document.getElementById("tabla_materias").insertRow(-1);
             $.each(res, function (index, i) {
+                var fila = document.getElementById("tabla_materias").insertRow(-1);
                 fila.insertCell(-1).innerHTML = i[1];
                 fila.insertCell(-1).innerHTML = i[2];
                 
@@ -20,7 +20,7 @@ $(document).ready(function() {
             }
         })
         .fail(function(xhr, status, error) {
-            $('body').html = "Error: " + xhr.responseText;
+            $('body').html("Error: " + xhr.responseText);
         });
 });
 
