@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/login.js"></script>
         <script>
             function cambiarPagina(opcionElegida, destino){
                 /*if(document.getElementById("frame").src !== destino)
@@ -31,7 +32,7 @@
                 <ul class="nav nav-tabs nav-justified" id="menu">
                     <li id = "opcion_1"><a href="javascript:cambiarPagina('opcion_1','tutorados.html');">Mis tutorados</a></li>
                     <li id="opcion_2"><a href="javascript:cambiarPagina('opcion_2','clases.html');">Mis materias</a></li>
-                    <li id="opcion_3"><a href="#">Cerrar sesión</a></li>
+                    <li id="opcion_3"><a href="#" onclick = "cerrarSesion()">Cerrar sesión</a></li>
                 </ul>
             </div>
             

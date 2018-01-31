@@ -39,7 +39,7 @@
     function getConnection(){
         $mysqli = new mysqli("localhost", "root", "12345", "platinum");
         if ($mysqli->connect_errno) {
-            lanzar_error("Error al conectar con la base de datos: " . $mysqli->connect_error);
+                lanzar_error("Error al conectar con la base de datos: " . $mysqli->connect_error);
         }
         return $mysqli;
     }
