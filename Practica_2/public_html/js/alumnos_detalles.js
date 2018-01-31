@@ -7,8 +7,7 @@ $(document).ready(function() {
     obtenerDetallesAlumno();
 });
 function obtenerDetallesAlumno(){
-   //var id = sessionStorage.getItem("MatriculaAlumno");
-   var id = 153181;
+   var id = sessionStorage.getItem("MatriculaAlumno");   
    $.ajax({
         url: "php/alumnos_detalles.php",
         data:{            

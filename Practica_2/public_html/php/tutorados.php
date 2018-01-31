@@ -16,7 +16,7 @@
                  $info[] = $row;
             }
             foreach ($info as $info2){
-              echo "<tr><th>".$info2["matricula"]."</th>"."<th>".$info2["apellidos"]."</th>"."<th>".$info2["nombre"]."</th><th><input type='button' value='Detalles' onclick='Matricula(".$info2["matricula"].")'></th></tr>";
+              echo "<tr><th>".$info2["matricula"]."</th>"."<th>".$info2["apellidos"]."</th>"."<th>".$info2["nombre"]."</th><th><a href='alumnos_detalles.html' onclick='Matricula(".$info2["matricula"].")'><h5>Detalles</h5></a></th></tr>";
             }
             //Devuelve los tutorados del maestro que tenga iniciada su sesión en el momento.
             break;
