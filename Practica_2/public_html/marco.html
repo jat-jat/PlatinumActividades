@@ -11,8 +11,9 @@
         <script src="js/login.js"></script>
         <script>
             function cambiarPagina(opcionElegida, destino){
-                if(document.getElementById("frame").src !== destino)
-                    document.getElementById("frame").src = destino;
+                /*if(document.getElementById("frame").src !== destino)
+                    document.getElementById("frame").src = destino;*/
+                document.getElementById("frame").src = destino;
                 
                 var opcionesMenu = document.getElementById("menu").getElementsByTagName("li");
                 for (var i = 0; i < opcionesMenu.length; ++i) {
@@ -30,7 +31,7 @@
                 
                 <ul class="nav nav-tabs nav-justified" id="menu">
                     <li id = "opcion_1"><a href="javascript:cambiarPagina('opcion_1','tutorados.html');">Mis tutorados</a></li>
-                    <li id="opcion_2"><a href="javascript:cambiarPagina('opcion_2','materias.html');">Mis materias</a></li>
+                    <li id="opcion_2"><a href="javascript:cambiarPagina('opcion_2','clases.html');">Mis materias</a></li>
                     <li id="opcion_3"><a href="#" onclick = "cerrarSesion()">Cerrar sesión</a></li>
                 </ul>
             </div>
