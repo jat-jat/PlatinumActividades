@@ -2,6 +2,16 @@ var id;
 var grupo;
 
 $(document).ready(function() {
+    $.post( "php/sesion.php", {fn : "comprobar"}, null, "text")
+        .done(function(res) {
+            if(res == 0){
+                window.location.href = "index.html";
+            }
+        })
+        .fail(function(xhr, status, error) {
+            window.location.href = "index.html";
+        });
+        
     id = sessionStorage.getItem("DETALLES_CLASE_id");
     if(id !== null) sessionStorage.removeItem("DETALLES_CLASE_id");
     grupo = sessionStorage.getItem("DETALLES_CLASE_gr");

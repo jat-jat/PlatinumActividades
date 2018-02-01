@@ -28,17 +28,19 @@
             }
         break;
         case "contenido-tabla":            
-            $consulta = $conexion->prepare("SELECT *FROM miembros_clase m INNER JOIN clases c ON m.clase = c.id INNER JOIN materias mat ON c.materia = mat.id WHERE m.alumno = ?");
-            $consulta->bind_param("s", $_POST['id']);
-            if ($consulta->execute()){
+            $datos = array();
+            $query = "SELECT * FROM miembros_clase m INNER JOIN clases c ON m.clase = c.id INNER JOIN materias mat ON c.materia = mat.id WHERE m.alumno = ?";
+            
+            if (($consulta = $conexion->prepare($query)) && $consulta->bind_param("i", $_POST["id"]) && $consulta->execute()){
                 $res = $consulta->get_result();
                 while($fila= $res->fetch_assoc()){
-                    echo  "<tr id='" . $fila["clase"] . "'><td>" . $fila["nombre"] . "</td><td>".$fila["ano"].$fila["periodo"]."</td>".
-                           "<td>".$fila["grupo"]."</td><td>"."<a href='#body'><h5>Evento</h5></a>"."</td></tr>";
+                    array_push($datos, array($fila["clase"], $fila["nombre"] . " (" . $fila["ano"] . "-" . $fila["periodo"] . ")", $fila["grupo"]));
                 }
             }else{
                lanzar_error("Error al realizar la consulta: " . $consulta->error); 
             }
+            
+            echo json_encode($datos);
         break;
         default:
             lanzar_error("Error de servidor (" . __LINE__ . ")", false);

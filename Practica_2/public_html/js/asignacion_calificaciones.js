@@ -6,6 +6,16 @@ var valor_act = null;
 var alumnos = [];
 
 $(document).ready(function() {
+    $.post( "php/sesion.php", {fn : "comprobar"}, null, "text")
+        .done(function(res) {
+            if(res == 0){
+                window.location.href = "index.html";
+            }
+        })
+        .fail(function(xhr, status, error) {
+            window.location.href = "index.html";
+        });
+    
     id_c = sessionStorage.getItem("ASIG_CAL_id_clase");
     if(id_c !== null) sessionStorage.removeItem("ASIG_CAL_id_clase");
     grupo = sessionStorage.getItem("ASIG_CAL_grupo_clase");

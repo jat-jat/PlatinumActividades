@@ -55,7 +55,7 @@
             }
             $datos_clase = array();
             
-            $query ="SELECT nombre, 
+            /*$query ="SELECT nombre, 
                             ano, 
                             periodo 
                      FROM   (SELECT * 
@@ -64,6 +64,25 @@
                             INNER JOIN materias 
                                     ON cl.materia = materias.id";
             if(($consulta = $conexion->prepare($query)) && $consulta->bind_param("ii", $_POST["id_cl"], $_SESSION[ID_USUARIO]) && $consulta->execute()){
+                $res = $consulta->get_result();
+                if ($res->num_rows != 0){
+                    $datos_clase["inf"] = $res->fetch_row();
+                } else {
+                    lanzar_error("Usted no imparte esta clase.");
+                }
+            } else {
+                lanzar_error("Error de servidor (" . __LINE__ . ")");
+            }*/
+            
+            $query ="SELECT nombre, 
+                            ano, 
+                            periodo 
+                     FROM   (SELECT * 
+                             FROM   clases 
+                             WHERE  id = ?) AS cl 
+                            INNER JOIN materias 
+                                    ON cl.materia = materias.id";
+            if(($consulta = $conexion->prepare($query)) && $consulta->bind_param("i", $_POST["id_cl"]) && $consulta->execute()){
                 $res = $consulta->get_result();
                 if ($res->num_rows != 0){
                     $datos_clase["inf"] = $res->fetch_row();
@@ -168,7 +187,7 @@
                         $datos_clase["miembros"][$clave]["cal"][$corte] = null;
                     }
                 } else if($total_por_corte[$corte] != 100){
-                    foreach($datos_clase["miembros"] as $alumno){
+                    foreach($datos_clase["miembros"] as $clave => $alumno){
                         //Aplicamos una regla de 3, para crear una nueva calificación, en caso de que no se hayan
                         //calificado todas.
                         $datos_clase["miembros"][$clave]["cal"][$corte] = round(($alumno["cal"][$corte] * 100) / $total_por_corte[$corte], 2);
@@ -218,7 +237,9 @@
                 $puntos_de_corte = 0;
                 
                 foreach($_POST["act"][$i] as $asignatura){
-                    if(!is_int($asignatura[1]) || $asignatura[1] < 1 || $asignatura[1] > 100){
+                    $asignatura[1] = intval($asignatura[1]);
+                    
+                    if($asignatura[1] < 1 || $asignatura[1] > 100){
                         cerrar_transaccion($conexion, false);
                         lanzar_error("Al menos un valor es inválido.");
                     }

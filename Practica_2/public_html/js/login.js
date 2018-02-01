@@ -1,3 +1,15 @@
+$(document).ready(function() {
+    $.post( "php/sesion.php", {fn : "comprobar"}, null, "text")
+        .done(function(res) {
+            if(res == 1){
+                window.location.href = "marco.html";
+            }
+        })
+        .fail(function(xhr, status, error) {
+            window.location.href = "index.html";
+        });
+});
+
 function iniciarSesion(){
     var usuario = document.getElementById("usr").value;
     var password = document.getElementById("pwd").value;    
@@ -12,22 +24,6 @@ function iniciarSesion(){
         datatype: "text",        
         success: function(respuesta) {            
             window.location.replace("marco.html");
-        },
-        error: function(xhr, textStatus) {          
-            alert(xhr.responseText);
-        }
-    });
-}
-function cerrarSesion(){
-    $.ajax({
-        url: "php/sesion.php",
-        data:{            
-            fn:"logout"
-        },
-        type: "POST",
-        datatype: "text",        
-        success: function(respuesta) {            
-            window.location.replace("index.html");
         },
         error: function(xhr, textStatus) {          
             alert(xhr.responseText);

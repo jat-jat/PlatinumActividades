@@ -7,6 +7,16 @@ var actividades = [[], [], []];
 $(document).ready(function() {
     $("#btn_guardar").hide();
     
+    $.post( "php/sesion.php", {fn : "comprobar"}, null, "text")
+        .done(function(res) {
+            if(res == 0){
+                window.location.href = "index.html";
+            }
+        })
+        .fail(function(xhr, status, error) {
+            window.location.href = "index.html";
+        });
+    
     id = sessionStorage.getItem("ASIG_ACT_id_clase");
     if(id !== null) sessionStorage.removeItem("ASIG_ACT_id_clase");
     var titulo = sessionStorage.getItem("ASIG_ACT_titulo_clase");

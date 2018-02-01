@@ -8,21 +8,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="js/login.js"></script>
-        <script>
-            function cambiarPagina(opcionElegida, destino){
-                /*if(document.getElementById("frame").src !== destino)
-                    document.getElementById("frame").src = destino;*/
-                document.getElementById("frame").src = destino;
-                
-                var opcionesMenu = document.getElementById("menu").getElementsByTagName("li");
-                for (var i = 0; i < opcionesMenu.length; ++i) {
-                    $(opcionesMenu[i]).removeClass("active");
-                }
-                
-                $(document.getElementById(opcionElegida)).addClass("active");
-            }
-        </script>
+        <script src="js/marco.js"></script>
     </head>
     <body class="container">
         <div class="panel panel-warning">
@@ -37,10 +23,10 @@
             </div>
             
             <div class="panel-body">
-                <iframe style="display:block; width:100%;" id="frame"></iframe>
+                <iframe style="display:block; width:100%; height:300px;" id="frame" src='bienvenida.html'></iframe>
             </div>
             
-            <div class="panel-footer">Sesión iniciada como: PENDIENTE</div>
+            <div class="panel-footer" id='nombre'>Sesión iniciada como: </div>
         </div>
     </body>
 </html>

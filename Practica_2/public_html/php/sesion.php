@@ -41,6 +41,20 @@
                 echo "1";
             }
             break;
+        case "get_nombre":
+            $query = "SELECT concat(apellidos, ' ', nombre) FROM docentes WHERE id = ?";
+            if(($consulta = $conexion->prepare($query)) && $consulta->bind_param("i", $_SESSION[ID_USUARIO]) && $consulta->execute()){
+                $res = $consulta->get_result();
+                if ($res->num_rows != 0){
+                    echo $res->fetch_row()[0];
+                } else {
+                    lanzar_error("No ha iniciado sesión.");
+                }
+            } else {
+                lanzar_error("Error de servidor (" . __LINE__ . ")");
+            }
+            
+            break;
         default:
             lanzar_error("Error de servidor (" . __LINE__ . ")", false);
     }

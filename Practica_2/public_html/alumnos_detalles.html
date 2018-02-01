@@ -17,25 +17,27 @@ and open the template in the editor.
     <body class="container">
         <div class="panel panel-primary">
             <div class="panel-heading"> <center>
-                <p>informacion del tutorado</p>
-            </center> </div>
+                    <p>Información del tutorado</p>
+                </center> </div>
             <div class="panel-body"> 
                 <center>
                     <div id = "informacion_alumno">
                         <label>Nombre:</label>
-                        <label> Matricula: </label>
+                        <label> Matrícula: </label>
                     </div>
-                    <h5>Clases que cursa</h5>
-                    <table class='table table-bordered table-hover'>
-                    <thead>
-                    <tr>
-                    <th>Materia</th>
-                    <th>Periodo</th>
-                    <th>Grupo</th>
-                    <th>Hacer</th>
-                    </tr>
-                    </thead>
-                    <tbody id='contenidoTabla'></tbody>
+                    <h5>Clases que cursa y rendimiento académico</h5>
+                    
+                    <table id='tabla' class='table table-bordered table-hover'>
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Grupo</th>
+                                <th>Corte 1</th>
+                                <th>Corte 2</th>
+                                <th>Corte 3</th>
+                            </tr>
+                        </thead>
+                        <tbody id='contenidoTabla'></tbody>
                     </table>
                 </center>                
             </div>            
