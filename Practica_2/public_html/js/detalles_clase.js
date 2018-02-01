@@ -59,9 +59,15 @@ $(document).ready(function() {
 });
 
 function crearActividades(){
-    
+    sessionStorage.setItem("ASIG_ACT_id_clase", id);
+    sessionStorage.setItem("ASIG_ACT_titulo_clase", $("#nb_clase").html());
+    sessionStorage.setItem("ASIG_ACT_grupo_clase", grupo);
+    document.location.href = "asignacion_actividades.html";
 }
 
 function calificarActividad(id_act){
-    
+    sessionStorage.setItem("ASIG_CAL_id_clase", id);
+    sessionStorage.setItem("ASIG_CAL_grupo_clase", grupo);
+    sessionStorage.setItem("ASIG_CAL_id_act", id_act);
+    document.location.href = "asignacion_calificaciones.html";
 }

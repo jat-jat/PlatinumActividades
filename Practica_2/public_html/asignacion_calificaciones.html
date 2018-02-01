@@ -12,6 +12,23 @@
     </head>
     <body>
         <div><p class="bg-primary" align="center" id="titulo">Calificar una actividad</p></div>
-        <div class="well well-sm"><center>Clase: <b id="nb_clase"></b> - Corte: <b id="corte"></b><br>Actividad: <b id="nb_actividad"></b></center></div>
+        <div class="well well-sm"><center>Clase: <b id="nb_clase"></b> - Corte: <b id="corte"></b> - Grupo: <b id="grupo"></b><br>Actividad: <b id="nb_actividad"></b> - Valor: <b id="valor"></b></center></div>
+        
+        Alumnos:
+        <table id="tabla_miembros" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Matrícula</th>
+                    <th>Apellidos</th>
+                    <th>Nombre(s)</th>
+                    <th>Puntaje obtenido</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-primary" onclick="guardar()" id="btn_guardar">Guardar</button>
     </body>
 </html>

@@ -193,6 +193,71 @@
             
             echo json_encode($datos_clase);
             break;
+        case "asignar_actividades":
+            if(empty($_POST["id_cl"]) || empty($_POST["act"]) || !is_array($_POST["act"])){
+                lanzar_error("Parámetros incorrectos");
+            }
+            
+            $query = "SELECT COUNT(*) FROM actividades WHERE clase = ?";
+            if(($consulta = $conexion->prepare($query)) && $consulta->bind_param("i", $_POST["id_cl"]) && $consulta->execute()){
+                if($consulta->get_result()->fetch_row()[0] != 0){
+                    lanzar_error("Este curso ya tiene sus actividades establecidas.");
+                }
+            } else {
+                lanzar_error("Error de servidor (" . __LINE__ . ")");
+            }
+            
+            $query = "INSERT INTO actividades (id, nombre, valor, clase, corte) VALUES (0, ?, ?, ?, ?)";
+            if(!($consulta = $conexion->prepare($query))){
+                lanzar_error("Error de servidor (" . __LINE__ . ")");
+            }
+            iniciar_transaccion($conexion);
+            
+            for($i = 0; $i < 3; $i++){
+                $corte = strval($i + 1);
+                $puntos_de_corte = 0;
+                
+                foreach($_POST["act"][$i] as $asignatura){
+                    if(!is_int($asignatura[1]) || $asignatura[1] < 1 || $asignatura[1] > 100){
+                        cerrar_transaccion($conexion, false);
+                        lanzar_error("Al menos un valor es inválido.");
+                    }
+                    $puntos_de_corte += $asignatura[1];
+                    
+                    if (!($consulta->bind_param("siis", $asignatura[0], $asignatura[1], $_POST["id_cl"], $corte) && $consulta->execute())) {
+                        cerrar_transaccion($conexion, false);
+                        lanzar_error("Error de servidor (" . __LINE__ . ")");
+                    }
+                }
+                
+                if($puntos_de_corte != 100){
+                    cerrar_transaccion($conexion, false);
+                    lanzar_error("Las actividades no completan los 100 puntos, en al menos un corte.");
+                }
+            }
+            
+            cerrar_transaccion($conexion, true);
+            break;
+        case "calif_actividad":
+            if(empty($_POST["id_act"]) || empty($_POST["calif"]) || !is_array($_POST["calif"])){
+                lanzar_error("Parámetros incorrectos");
+            }
+            
+            $query = "INSERT INTO calificaciones (actividad, alumno, puntos) VALUES (?, ?, ?)";
+            if(!($consulta = $conexion->prepare($query))){
+                lanzar_error("Error de servidor (" . __LINE__ . ")");
+            }
+            iniciar_transaccion($conexion);
+            
+            foreach($_POST["calif"] as $calificacion){
+                if (!($consulta->bind_param("iii", $_POST["id_act"], $calificacion[0], $calificacion[1]) && $consulta->execute())) {
+                    cerrar_transaccion($conexion, false);
+                    lanzar_error("Error de servidor (" . __LINE__ . ")");
+                }
+            }
+            
+            cerrar_transaccion($conexion, true);
+            break;
         default:
             lanzar_error("Error de servidor (" . __LINE__ . ")", false);
     }
