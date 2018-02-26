@@ -28,7 +28,7 @@ $(document).ready(function() {
                 }
             };
             
-            sesion.send(JSON.stringify({ fn: "get_nombre" }));
+            sesion.send(JSON.stringify({ fn : "get_nombre" }));
         } else {
             alert(evt.data);
             sesion.close();

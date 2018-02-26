@@ -1,37 +1,38 @@
 $(document).ready(function() {
-    $.post( "php/sesion.php", {fn : "comprobar"}, null, "text")
-        .done(function(res) {
-            if(res == 0){
-                window.location.href = "index.html";
-            } else {
-                $.post( "php/clases.php", {fn : "docentes_ver"}, null, "json")
-                    .done(function(res) {
-                        $.each(res, function (index, i) {
-                            var fila = document.getElementById("tabla_materias").insertRow(-1);
-                            fila.insertCell(-1).innerHTML = i[1];
-                            fila.insertCell(-1).innerHTML = i[2];
+    if(window.parent.sesion){
+        var sesion = window.parent.sesion;
+        
+        sesion.onmessage = function(evt){
+            try {
+                var res = JSON.parse(evt.data);
 
-                            var colGrupos = fila.insertCell(-1);
-                            $.each(i[3], function (index2, j) {
-                                $(colGrupos).append("<button type=\"button\" class=\"btn btn-success\" onclick=\"verDetallesClase(" + i[0] + ", \'" + j + "\')\">" + j + "</button>");
-                            });
+                $.each(res, function (index, i) {
+                    var fila = document.getElementById("tabla_materias").insertRow(-1);
+                    fila.insertCell(-1).innerHTML = i[1];
+                    fila.insertCell(-1).innerHTML = i[2];
 
-                            if(colGrupos.innerHTML == "")
-                                colGrupos.innerHTML = "Ninguno";
-                        });
-
-                        if(Object.keys(res).length === 0){
-                            $("#tabla_materias").replaceWith("<h4>Usted no imparte ninguna clase.</h4>");
-                        }
-                    })
-                    .fail(function(xhr, status, error) {
-                        $('body').html("Error: " + xhr.responseText);
+                    var colGrupos = fila.insertCell(-1);
+                    $.each(i[3], function (index2, j) {
+                        $(colGrupos).append("<button type=\"button\" class=\"btn btn-success\" onclick=\"verDetallesClase(" + i[0] + ", \'" + j + "\')\">" + j + "</button>");
                     });
+
+                    if(colGrupos.innerHTML == "")
+                        colGrupos.innerHTML = "Ninguno";
+                });
+
+                if(Object.keys(res).length === 0){
+                    $("#tabla_materias").replaceWith("<h4>Usted no imparte ninguna clase.</h4>");
+                }
+            } catch (e) {
+                //En caso de error...
+                $('body').html("Error: " + evt.data);
             }
-        })
-        .fail(function(xhr, status, error) {
-            window.location.href = "index.html";
-        });
+        };
+        
+        sesion.send(JSON.stringify({fn : "CLASES_docentes_ver"}));
+    } else {
+        window.location.href = "index.html";
+    }
 });
 
 function verDetallesClase(id, grupo){

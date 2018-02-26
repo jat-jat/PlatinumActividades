@@ -7,16 +7,6 @@ var actividades = [[], [], []];
 $(document).ready(function() {
     $("#btn_guardar").hide();
     
-    $.post( "php/sesion.php", {fn : "comprobar"}, null, "text")
-        .done(function(res) {
-            if(res == 0){
-                window.location.href = "index.html";
-            }
-        })
-        .fail(function(xhr, status, error) {
-            window.location.href = "index.html";
-        });
-    
     id = sessionStorage.getItem("ASIG_ACT_id_clase");
     if(id !== null) sessionStorage.removeItem("ASIG_ACT_id_clase");
     var titulo = sessionStorage.getItem("ASIG_ACT_titulo_clase");
@@ -24,11 +14,15 @@ $(document).ready(function() {
     grupo = sessionStorage.getItem("ASIG_ACT_grupo_clase");
     if(grupo !== null) sessionStorage.removeItem("ASIG_ACT_grupo_clase");
     
-    if(id === null || titulo === null || grupo == null){
+    if(id === null || titulo === null || grupo === null){
         document.location.href = "clases.html";
     }
     
     $("#nb_clase").html(titulo);
+    
+    if(!window.parent.sesion){
+        window.location.href = "index.html";
+    }
 });
 
 function capitalizar(s) {
@@ -109,19 +103,17 @@ function irADetallesClase(){
 function guardar(){
     $(':button').prop('disabled', true);
     
-    $.ajax({
-        url: "php/clases.php",
-        data: {fn : "asignar_actividades", id_cl : id, act : actividades},
-        type: "POST",
-        dataType: 'text',
-        async: false,
-        success: function (respuesta) {
+    var sesion = window.parent.sesion;
+    
+    sesion.onmessage = function(evt){
+        if(evt.data === ""){
             alert("Actividades guardadas correctamente.");
             irADetallesClase();
-        },
-        error: function (xhr, status) {
-            alert("Error: " + xhr.responseText);
+        } else {
+            alert("Error: " + evt.data);
             $(':button').prop('disabled', false);
         }
-    });
+    };
+    
+    sesion.send(JSON.stringify({fn : "CLASES_asignar_actividades", id_cl : id, act : actividades}));
 }
