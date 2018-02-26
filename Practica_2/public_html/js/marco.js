@@ -1,12 +1,49 @@
+//El WebSocket que permite hacer todas las peticiones.
+var sesion;
+
 $(document).ready(function() {
-    $.post( "php/sesion.php", {fn : "get_nombre"}, null, "text")
-        .done(function(res) {
-            $("#nombre").append(res);
-        })
-        .fail(function(xhr, status, error) {
-            alert("Error: " + xhr.responseText);
-            //window.location.href = "index.html";
-        });
+    sesion = new WebSocket("ws://" + window.location.hostname + ":8080");
+    
+    sesion.onopen = function(evt){
+        sesion.send(JSON.stringify({
+            usuario: sessionStorage.getItem("urs"),
+            password: sessionStorage.getItem("pwd"),
+            fn: "login"
+        }));
+        
+        sessionStorage.removeItem("urs");
+        sessionStorage.removeItem("pwd");
+    };
+    
+    sesion.onmessage = function(evt){
+        if(evt.data === ""){
+            sessionStorage.setItem("sesion", 1);
+            
+            sesion.onmessage = function(evt){
+                var info = JSON.parse(evt.data);
+                if(info["error"]){
+                    alert("Error al obtener el nombre del usuario: " + info["nb"]);
+                } else {
+                    $("#nombre").append(info["nb"]);
+                }
+            };
+            
+            sesion.send(JSON.stringify({ fn: "get_nombre" }));
+        } else {
+            alert(evt.data);
+            sesion.close();
+        }
+    };
+
+    sesion.onerror = function(evt){
+        alert("Error de socket: " + evt.data);
+        sesion.close();
+    };
+    
+    sesion.onclose = function onClose(evt){
+        sessionStorage.removeItem("sesion");
+        window.location.replace("index.html");
+    };
 });
 
 function cambiarPagina(opcionElegida, destino){
@@ -23,18 +60,5 @@ function cambiarPagina(opcionElegida, destino){
 }
 
 function cerrarSesion(){
-    $.ajax({
-        url: "php/sesion.php",
-        data:{            
-            fn:"logout"
-        },
-        type: "POST",
-        datatype: "text",        
-        success: function(respuesta) {            
-            window.location.replace("index.html");
-        },
-        error: function(xhr, textStatus) {          
-            alert(xhr.responseText);
-        }
-    });
+    sesion.send(JSON.stringify({ fn: "logout" }));
 }

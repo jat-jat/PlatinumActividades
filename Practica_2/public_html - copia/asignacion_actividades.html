@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Asignación de actividades</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/asignacion_actividades.js"></script>
+    </head>
+    <body>
+        <div><p class="bg-primary" align="center">Asignación de actividades de la clase: <b id="nb_clase"></b></p></div>
+        
+        <button type="button" class="btn btn-success" onclick="abrirVentanaCrear()">Nueva actividad</button>
+        <button type="button" class="btn btn-danger" onclick="reiniciar()">Reiniciar</button>
+        <button type="button" class="btn btn-warning" onclick="irADetallesClase()">Regresar</button>
+        
+        <ul id="lista_actividades">
+            <li>Corte 1:
+                <ul id="c1">
+                </ul>
+            </li>
+            <li>Corte 2:
+                <ul id="c2">
+                </ul>
+            </li>
+            <li>Corte 3:
+                <ul id="c3">
+                </ul>
+            </li>
+        </ul>
+        
+        Progreso total (puntos asignados en todos los cortes):
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" style="width:0%" id="progreso">0/300</div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="guardar()" id="btn_guardar">Guardar</button>
+        
+        <div id="modal" class="modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Nueva actividad</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-group" id="formulario">
+                    <label for="nombre">Nombre/descripción:</label>
+                    <input type="text" class="form-control" id="nombre" maxlength="100">
+
+                    <br><label for="valor">Valor:</label>
+                    <input type="number" class="form-control" name="valor" id="valor" min="1" max="100" value="10">
+                    
+                    
+                    <br><label for="valor">Corte:</label>
+                    <label><input type="radio" name="corte" id="opcion_c1">1&nbsp;</label>
+                    <label><input type="radio" name="corte" id="opcion_c2">2&nbsp;</label>
+                    <label><input type="radio" name="corte" id="opcion_c3">3&nbsp;</label>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="crearActividad()">Crear</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div></div></div>
+    </body>
+</html>

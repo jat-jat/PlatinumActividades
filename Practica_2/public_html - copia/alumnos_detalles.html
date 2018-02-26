@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Alumno detalles</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/alumnos_detalles.js"></script>
+    </head>
+    <body class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading"> <center>
+                    <p>Información del tutorado</p>
+                </center> </div>
+            <div class="panel-body"> 
+                <center>
+                    <div id = "informacion_alumno">
+                        <label>Nombre:</label>
+                        <label> Matrícula: </label>
+                    </div>
+                    <h5>Clases que cursa y rendimiento académico</h5>
+                    
+                    <table id='tabla' class='table table-bordered table-hover'>
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Grupo</th>
+                                <th>Corte 1</th>
+                                <th>Corte 2</th>
+                                <th>Corte 3</th>
+                            </tr>
+                        </thead>
+                        <tbody id='contenidoTabla'></tbody>
+                    </table>
+                </center>                
+            </div>            
+        </div>        
+    </body>
+</html>
