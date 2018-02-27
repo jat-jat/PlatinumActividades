@@ -364,6 +364,28 @@ class WebSocket implements HttpServerInterface {
                 cerrar_transaccion($this->conexion_bd, true);
                 $cliente->send("");
                 break;
+            case "CLASES_get_calif_actividad":
+                if(empty($datos["id_act"])){
+                    $cliente->send("Parámetros incorrectos");
+                    break;
+                }
+                
+                $query = "SELECT alumno, puntos FROM calificaciones WHERE actividad = ?";
+                if(($consulta = $this->conexion_bd->prepare($query)) && $consulta->bind_param("i", $datos["id_act"]) && $consulta->execute()){
+                    $calificaciones = array();
+                    $res = $consulta->get_result();
+                    
+                    while ($fila = $res->fetch_row()){
+                        array_push($calificaciones, $fila);
+                    }
+                    
+                    $cliente->send(json_encode($calificaciones));
+                } else {
+                    $cliente->send("Error de servidor (" . __LINE__ . ")");
+                    break;
+                }
+                
+                break;
             case "TUTORADOS_ver":
                 $query = "SELECT matricula, apellidos, nombre FROM alumnos where tutor = ?";
                 
@@ -423,11 +445,12 @@ class WebSocket implements HttpServerInterface {
 
 }
 
-//Inicialización del gestor de sesiones
-//Hace que los objetos cliente tengan el atributo Session
+//Inicialización del gestor de sesiones.
+//Hace que los objetos cliente tengan el atributo Session.
 $memcache = new Memcache;
 $memcache->connect('localhost', 11211);
 
+//Inicializamos un servicio para que nuestro WebSocket atienda peticiones.
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(
@@ -439,5 +462,6 @@ $server = IoServer::factory(
     ),
     8080
 );
+//Corremos el servicio WebSocket
 $server->run();
 ?>

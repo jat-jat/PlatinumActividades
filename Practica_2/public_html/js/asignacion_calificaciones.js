@@ -51,18 +51,40 @@ $(document).ready(function() {
                     $('body').html("Se produjo un error al recolectar la información de la actividad.");
                     return;
                 }
-                alert(JSON.stringify(res));
-                $.each(res['miembros'], function (index, j) {
-                    alumnos.push(j["inf"][0]);
+                
+                function crearLista (listaAlumnos, calificaciones = null) {
+                    $.each(listaAlumnos, function (index, j) {
+                        alumnos.push(j["inf"][0]);
 
-                    var fila = document.getElementById("tabla_miembros").insertRow(-1);
-                    fila.insertCell(-1).innerHTML = index + 1;
-                    fila.insertCell(-1).innerHTML = j["inf"][0];
-                    fila.insertCell(-1).innerHTML = j["inf"][1];
-                    fila.insertCell(-1).innerHTML = j["inf"][2];
-
-                    fila.insertCell(-1).innerHTML = "<input type='number' id='calificacion_" + index + "' class='form-control' name='valor' id='valor' min='0' max='" + valor_act + "' value='0'>";
-                });
+                        var fila = document.getElementById("tabla_miembros").insertRow(-1);
+                        fila.insertCell(-1).innerHTML = index + 1;
+                        fila.insertCell(-1).innerHTML = j["inf"][0];
+                        fila.insertCell(-1).innerHTML = j["inf"][1];
+                        fila.insertCell(-1).innerHTML = j["inf"][2];
+                        
+                        var calificacion = 0;
+                        
+                        if(calificacion != null){
+                            $.each(calificaciones, function (index, k) {
+                                if(k[0] == j["inf"][0]){
+                                    calificacion = k[1];
+                                }
+                            });
+                        }
+                        
+                        fila.insertCell(-1).innerHTML = "<input type='number' id='calificacion_" + index + "' class='form-control' name='valor' id='valor' min='0' max='" + valor_act + "' value='" + calificacion + "'>";
+                    });
+                };
+                
+                if(seVaAModificar){
+                    sesion.onmessage = function(evt2){
+                        crearLista(res['miembros'], JSON.parse(evt2.data));
+                    };
+                    
+                    sesion.send(JSON.stringify({fn : "CLASES_get_calif_actividad", id_act : id_act}));
+                } else {
+                    crearLista(res['miembros']);
+                }
             } catch (e) {
                 $('body').html("Error: " + evt.data);
             }
@@ -95,7 +117,7 @@ function guardar(){
         }
     }
     
-    if(!confirm("Una vez guardadas, las calificaciones no se podrán modificar. ¿Desea continuar?")){
+    if(!seVaAModificar && !confirm("Una vez guardadas, las calificaciones no se podrán modificar. ¿Desea continuar?")){
         return;
     }
     
