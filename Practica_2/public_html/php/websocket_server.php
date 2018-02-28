@@ -7,6 +7,7 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Http\HttpServerInterface;
+use Psr\Http\Message\RequestInterface;
 
 //Importaciones para el soporte de sesiones.
 use Ratchet\Session\SessionProvider;
@@ -29,7 +30,7 @@ class WebSocket implements HttpServerInterface {
         $this->conexion_bd = getConnection();
     }
 
-    public function onOpen(ConnectionInterface $cliente, Psr\Http\Message\RequestInterface $request = NULL) {
+    public function onOpen(ConnectionInterface $cliente, RequestInterface $request = NULL) {
         $this->clientes->attach($cliente);
     }
 
@@ -39,6 +40,11 @@ class WebSocket implements HttpServerInterface {
 
     public function onMessage(ConnectionInterface $cliente, $datos) {
         $datos = json_decode($datos, true);
+        
+        if(json_last_error() != JSON_ERROR_NONE){
+            $cliente->close();
+            return;
+        }
         
         switch ($datos['fn']) {
             case "login":
@@ -53,12 +59,15 @@ class WebSocket implements HttpServerInterface {
                             $cliente->send("");
                         } else {                    
                             $cliente->send("Los datos ingresados son inválidos.");
+                            $cliente->close();
                         }
                     }else{
-                        $cliente->send("Error al realizar la consulta: " . $consulta->error);                
+                        $cliente->send("Error al realizar la consulta: " . $consulta->error);
+                        $cliente->close();
                     }
                 } else {
                     $cliente->send("Debes llenar primero todos los campos.");
+                    $cliente->close();
                 }
                 break;
             case "logout":
@@ -436,6 +445,8 @@ class WebSocket implements HttpServerInterface {
                     $cliente->send("Error de servidor (" . __LINE__ . ")");
                 }
                 break;
+            default:
+                $cliente->close();
         }
     }
 

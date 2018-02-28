@@ -16,9 +16,7 @@ $(document).ready(function() {
     };
     
     sesion.onmessage = function(evt){
-        if(evt.data === ""){
-            sessionStorage.setItem("sesion", 1);
-            
+        if(evt.data === ""){            
             sesion.onmessage = function(evt){
                 var info = JSON.parse(evt.data);
                 if(info["error"]){
@@ -31,7 +29,6 @@ $(document).ready(function() {
             sesion.send(JSON.stringify({ fn : "get_nombre" }));
         } else {
             alert(evt.data);
-            sesion.close();
         }
     };
 

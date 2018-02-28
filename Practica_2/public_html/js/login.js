@@ -1,10 +1,3 @@
-$(document).ready(function() {
-    //Si ya inició sesión
-    if (sessionStorage.getItem("sesion") !== null){
-        window.location.href = "marco.html";
-    }
-});
-
 function iniciarSesion(){
     var usuario = document.getElementById("usr").value;
     var password = document.getElementById("pwd").value;    
